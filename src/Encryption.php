@@ -6,10 +6,21 @@ namespace App;
 
 class Encryption
 {
-    protected string $key;
+    protected string $key = "test-key";
 
-    public function encrypt(string $string): string
+    public function encrypt(string $text): string
     {
-        return $string;
+        $outText = '';
+        for ($i = 0; $i < strlen($text);) {
+            for ($j = 0; ($j < strlen($this->key) && $i < strlen($text)); $j++, $i++) {
+                $outText .= $text[$i] ^ $this->key[$j];
+            }
+        }
+        return $outText;
+    }
+
+    public function decrypt(string $text): string
+    {
+        return $this->encrypt($text);
     }
 }
