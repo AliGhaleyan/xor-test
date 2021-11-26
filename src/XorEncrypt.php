@@ -4,7 +4,7 @@
 namespace App;
 
 
-class Encryption
+class XorEncrypt
 {
     protected string $key = "test-key";
 
