@@ -1,15 +1,27 @@
 <?php
 
 
+use App\XCrypt;
+
 class EncryptionTest extends \PHPUnit\Framework\TestCase
 {
-    public function testEncryption()
+    protected ?XCrypt $xor;
+    protected string $text = "test text";
+
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
-        $encryption = new \App\Encryption();
-        $text = "ali serjik";
-        $encrypted = $encryption->encrypt($text);
-        $this->assertTrue(is_string($encrypted));
-        $decrypted = $encryption->decrypt($encrypted);
-        $this->assertEquals($decrypted, $text);
+        parent::__construct($name, $data, $dataName);
+        $this->xor = new XCrypt;
+    }
+
+    public function test_encryption()
+    {
+        $this->assertTrue(is_string($this->xor->encrypt($this->text)));
+    }
+
+    public function test_decryption()
+    {
+        $encrypted = $this->xor->encrypt($this->text);
+        $this->assertEquals($this->text, $this->xor->decrypt($encrypted));
     }
 }
