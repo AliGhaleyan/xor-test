@@ -5,23 +5,39 @@ use App\XCrypt;
 
 class EncryptionTest extends \PHPUnit\Framework\TestCase
 {
-    protected ?XCrypt $xor;
-    protected string $text = "test text";
+    protected XCrypt $sut;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->xor = new XCrypt;
+        $this->sut = new XCrypt;
     }
 
-    public function test_encryption()
+    public function test_encryption_returns_correct_value()
     {
-        $this->assertTrue(is_string($this->xor->encrypt($this->text)));
+        //arrange
+        $unEncryptedText = 'un-encrypted-text';
+        $encryptedTestInHexFormat = '010b5e114308170004111610001f000100';
+
+        //act
+        $encryptedText = $this->sut->encrypt($unEncryptedText);
+
+
+        $this->assertEquals($encryptedTestInHexFormat, bin2hex($encryptedText));
     }
 
-    public function test_decryption()
+
+    public function test_decryption_returns_correct_value()
     {
-        $encrypted = $this->xor->encrypt($this->text);
-        $this->assertEquals($this->text, $this->xor->decrypt($encrypted));
+        //arrange
+        $unEncryptedText = 'un-encrypted-text';
+        $encryptedTestInHexFormat = '010b5e114308170004111610001f000100';
+
+        //act
+        $decryptedTest = $this->sut->decrypt(hex2bin($encryptedTestInHexFormat));
+
+        //assert
+        $this->assertEquals($unEncryptedText, $decryptedTest);
     }
+
 }
